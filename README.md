@@ -1,1 +1,1 @@
-# GestionRestaurantBack-SpringMicroServices
+# GestionStock-AngularSpringMicroServices

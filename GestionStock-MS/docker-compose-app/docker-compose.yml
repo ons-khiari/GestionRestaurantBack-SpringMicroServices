@@ -1,0 +1,57 @@
+version: "3.9"
+services:
+  discovery:
+    build:  ../discovery-server
+    ports:
+      - "8761:8761"
+    image: "discovery-server"
+
+  client-ms:
+    build: ../ClientMs
+    environment: 
+      - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
+    ports:
+      - "8082:8082"
+    image: "client-service"
+
+  article-ms:
+    build: ../Article-MS
+    environment: 
+      - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
+    ports:
+      - "9098:9098"
+    image: "article-service"
+
+  categorie-ms:
+    build: ../Categorie_MS
+    environment: 
+      - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
+    ports:
+      - "9099:9099"
+    image: "categorie-service"
+    depends_on:
+      - article-ms
+
+  fournisseur-ms:
+    build: ../ProjetWD
+    environment: 
+      - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
+    ports:
+      - "8083:8083"
+    image: "fournisseur-service"
+
+  livraison-node-ms:
+    build: ../Livraison-Node-MS
+    environment: 
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=discovery
+    ports:
+      - "4001:4001"
+    image: "livraison-service"
+
+  gateway:
+    build: ../Gateway
+    environment: 
+      - eureka.client.serviceUrl.defaultZone=http://discovery:8761/eureka/
+    ports:
+      - "8087:8087"
+    image: "gateway-server"
